@@ -2,6 +2,7 @@ package PreProject.Task_312.springboot.controller;
 
 import PreProject.Task_312.springboot.dao.UserDao;
 import PreProject.Task_312.springboot.model.User;
+import PreProject.Task_312.springboot.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,21 +15,21 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/")
 public class UserController {
 
-    private final UserDao userDAO;
+    private final UserService userService;
 
     @Autowired
-    public UserController(UserDao userDAO) {
-        this.userDAO = userDAO;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping()
     public String index(Model model) {
-        model.addAttribute("users", userDAO.listUsers());
+        model.addAttribute("users", userService.listUsers());
         return "index";
     }
     @GetMapping("/{id}")
     public String show(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("user", userDAO.getById(id));
+        model.addAttribute("user", userService.getById(id));
         return "show";
     }
 
@@ -43,13 +44,13 @@ public class UserController {
         if (bindingResult.hasErrors())
             return "new";
 
-        userDAO.add(user);
+        userService.add(user);
         return "redirect:/";
     }
 
     @GetMapping("/{id}/edit")
     public String edit(@ModelAttribute("id") Long id, Model model) {
-        model.addAttribute("user", userDAO.getById(id));
+        model.addAttribute("user", userService.getById(id));
         return "edit";
     }
 
@@ -59,13 +60,13 @@ public class UserController {
         if (bindingResult.hasErrors())
             return "edit";
 
-        userDAO.update(updateuser);
+        userService.update(updateuser);
         return "redirect:/";
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") Long id) {
-        userDAO.removeById(id);
+        userService.removeById(id);
         return "redirect:/";
     }
 
