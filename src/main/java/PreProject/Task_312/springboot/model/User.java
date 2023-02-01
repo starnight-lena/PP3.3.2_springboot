@@ -101,20 +101,12 @@ public class User {
 
         User user = (User) o;
 
-        if (age != user.age) return false;
-        if (!Objects.equals(id, user.id)) return false;
-        if (!Objects.equals(firstName, user.firstName)) return false;
-        if (!Objects.equals(lastName, user.lastName)) return false;
-        return Objects.equals(email, user.email);
+        return Objects.equals(id, user.id);
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
-        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
-        result = 31 * result + age;
-        result = 31 * result + (email != null ? email.hashCode() : 0);
+        int result = id != null ? 31 * id.hashCode() : 0;
         return result;
     }
 }
