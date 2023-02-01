@@ -3,44 +3,43 @@ package PreProject.Task_312.springboot.dao;
 import PreProject.Task_312.springboot.model.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 
 @Repository
-public class UserDaoImp implements UserDao{
-    @PersistenceContext()
+public class UserDaoImp implements UserDao {
+    @PersistenceContext
     private EntityManager entityManager;
 
     @Override
-    @Transactional
-    public void add(User user) {
+    public void createUser(User user) {
         entityManager.persist(user);
-        entityManager.close();
+        entityManager.flush();
     }
 
     @Override
-    public List<User> listUsers() {
-        return entityManager.createQuery("SELECT user FROM User user", User.class).getResultList();
+    public List<User> getAllUsers() {
+        return entityManager.createQuery("from User", User.class).getResultList();
     }
 
     @Override
-    @Transactional
-    public void update(User updateUser) {
+    public void updateUser(User updateUser) {
         entityManager.merge(updateUser);
+        entityManager.flush();
     }
 
     @Override
-    @Transactional
     public void removeById(Long id) {
         User user = entityManager.find(User.class, id);
         if (user != null) {
             entityManager.remove(user);
         }
+        entityManager.flush();
     }
 
+    @Override
     public User getById(Long id) {
         return entityManager.find(User.class, id);
     }

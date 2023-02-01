@@ -1,6 +1,5 @@
 package PreProject.Task_312.springboot.controller;
 
-import PreProject.Task_312.springboot.dao.UserDao;
 import PreProject.Task_312.springboot.model.User;
 import PreProject.Task_312.springboot.service.UserService;
 import jakarta.validation.Valid;
@@ -10,11 +9,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-
 @Controller
 @RequestMapping("/")
 public class UserController {
-
     private final UserService userService;
 
     @Autowired
@@ -23,52 +20,49 @@ public class UserController {
     }
 
     @GetMapping()
-    public String index(Model model) {
-        model.addAttribute("users", userService.listUsers());
-        return "index";
+    public String showListUsers(Model model) {
+        model.addAttribute("users", userService.getAllUsers());
+        return "users";
     }
+
     @GetMapping("/{id}")
-    public String show(@PathVariable("id") Long id, Model model) {
+    public String showUser(@PathVariable("id") Long id, Model model) {
         model.addAttribute("user", userService.getById(id));
         return "show";
     }
 
     @GetMapping("/new")
-    public String newUser(@ModelAttribute("user") User user) {
+    public String createUser(@ModelAttribute("user") User user) {
         return "new";
     }
 
     @PostMapping()
-    public String create(@ModelAttribute("user") @Valid User user,
-                         BindingResult bindingResult) {
+    public String createUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return "new";
-
-        userService.add(user);
+        userService.createUser(user);
         return "redirect:/";
     }
 
     @GetMapping("/{id}/edit")
-    public String edit(@ModelAttribute("id") Long id, Model model) {
+    public String updateUser(@ModelAttribute("id") Long id, Model model) {
         model.addAttribute("user", userService.getById(id));
         return "edit";
     }
 
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("user") @Valid User updateuser, BindingResult bindingResult) {
+    public String updateUser(@ModelAttribute("user") @Valid User updateuser, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return "edit";
 
-        userService.update(updateuser);
+        userService.updateUser(updateuser);
         return "redirect:/";
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") Long id) {
+    public String deleteUser(@PathVariable("id") Long id) {
         userService.removeById(id);
         return "redirect:/";
     }
-
-
 }

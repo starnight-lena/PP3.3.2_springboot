@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Show</title>
@@ -13,7 +13,7 @@
 <a th:href="@{/{id}/edit(id=${user.getId()})}">Edit</a>
 
 <form th:method="DELETE" th:action="@{/{id}(id=${user.getId()})}">
-  <input type="submit" value="Delete"/>
+    <input type="submit" value="Delete"/>
 </form>
 
 </body>

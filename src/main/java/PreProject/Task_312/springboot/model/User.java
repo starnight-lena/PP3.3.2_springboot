@@ -1,11 +1,12 @@
 package PreProject.Task_312.springboot.model;
 
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -33,8 +34,8 @@ public class User {
     @Email(message = "Email should be valid")
     private String email;
 
-
-    public User() {}
+    public User() {
+    }
 
     public User(String firstName, String lastName, int age, String email) {
         this.firstName = firstName;
@@ -91,5 +92,29 @@ public class User {
                 ", age='" + age + '\'' +
                 ", email='" + email + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (age != user.age) return false;
+        if (!Objects.equals(id, user.id)) return false;
+        if (!Objects.equals(firstName, user.firstName)) return false;
+        if (!Objects.equals(lastName, user.lastName)) return false;
+        return Objects.equals(email, user.email);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + age;
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        return result;
     }
 }
